@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clash AI - Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      width: 100%;
+      background: #000000;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+
+    .glow.one { top: 20%; left: 10%; }
+    .glow.two { bottom: 15%; right: 20%; }
+    .glow.three { top: 70%; left: 40%; opacity: 0.4; }
+
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 950px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      z-index: 10;
+      transition: 0.4s ease;
+    }
+
+    .navbar:hover {
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ccc;
+      font-size: 0.9rem;
+      transition: 0.3s;
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a[href="#"]:nth-child(3) {
+      background: radial-gradient(circle at top right, #700000, #300000);
+      color: white;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    }
+
+    .nav-links a[href="#"]:nth-child(3):hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
+
+    .login-btn {
+      background: radial-gradient(circle at top right, #700000, #300000);
+      border: none;
+      color: white;
+      padding: 8px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    }
+
+    .login-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    /* Login/Signup Container */
+    .auth-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 180px 20px 100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .auth-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 50px 40px;
+      width: 100%;
+      max-width: 450px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+      position: relative;
+      margin-top: 60px;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-box::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      background: linear-gradient(45deg, rgba(255,0,0,0.3), rgba(255,255,255,0.1), rgba(255,0,0,0.3));
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .auth-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .auth-header p {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 5px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: 0.3s;
+      font-size: 0.9rem;
+      min-height: 44px;
+    }
+
+    .auth-tab.active {
+      background: radial-gradient(circle at top right, #700000, #300000);
+      color: white;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgba(255, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    }
+
+    .form-group input::placeholder {
+      color: #888;
+    }
+
+    .auth-btn {
+      width: 100%;
+      background: radial-gradient(circle at bottom left, #550000, #220000);
+      border: none;
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+      margin-top: 10px;
+      min-height: 50px;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+    }
+
+    .auth-divider {
+      text-align: center;
+      margin: 25px 0;
+      position: relative;
+    }
+
+    .auth-divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .auth-divider span {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0 15px;
+      color: #ccc;
+      font-size: 0.8rem;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .social-btn {
+      flex: 1;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: #ccc;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 50px;
+    }
+
+    .social-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #ccc;
+      font-size: 0.85rem;
+    }
+
+    .auth-footer a {
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .auth-footer a:hover {
+      color: #ff4444;
+    }
+
+    /* Enhanced Mobile Styles */
+    @media (max-width: 900px) {
+      .navbar {
+        width: 90%;
+        padding: 14px 30px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+
+      .auth-container {
+        padding: 150px 15px 80px;
+      }
+
+      .auth-box {
+        padding: 40px 30px;
+        margin: 40px 20px 0;
+      }
+
+      .auth-header h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px;
+        display: none;
+        border-radius: 0 0 20px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 100;
+      }
+      
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 15px 20px;
+        font-size: 1rem;
+        text-align: center;
+        border-radius: 10px;
+        margin: 5px 0;
+      }
+
+      .social-login {
+        flex-direction: column;
+      }
+      
+      .auth-container {
+        padding: 130px 10px 60px;
+      }
+      
+      .auth-box {
+        margin-top: 30px;
+        padding: 30px 20px;
+      }
+
+      .auth-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .auth-header p {
+        font-size: 1rem;
+      }
+
+      .auth-tab, .social-btn, .auth-btn {
+        min-height: 50px;
+        padding: 15px 20px;
+      }
+
+      .form-group input {
+        padding: 16px 20px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 12px 20px;
+      }
+
+      .logo {
+        font-size: 1.1rem;
+      }
+
+      .auth-container {
+        padding: 120px 10px 40px;
+      }
+
+      .auth-box {
+        margin: 20px 10px;
+        padding: 25px 20px;
+      }
+
+      .auth-header h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+  <div class="glow three"></div>
+
+  <header class="navbar">
+    <div class="logo">CLASH AI</div>
+    <nav class="nav-links">
+      <a href="index.html">HOME</a>
+      <a href="chat.html">CHATBOT</a>
+      <a href="#">JOIN NOW</a>
+      <a href="#">CONTACT</a>
+      <a href="#">ABOUT</a>
+    </nav>
+    <button class="login-btn" onclick="window.location.href='index.html'">BACK HOME</button>
+  </header>
+
+  <section class="auth-container">
+    <div class="auth-box">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue your AI journey</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="showForm('login')">Login</button>
+        <button class="auth-tab" onclick="showForm('signup')">Sign Up</button>
+      </div>
+
+      <form class="auth-form active" id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="auth-btn">Sign In</button>
+
+        <div class="auth-divider">
+          <span>Or continue with</span>
+        </div>
+
+        <div class="social-login">
+          <button type="button" class="social-btn">
+            <span>Google</span>
+          </button>
+          <button type="button" class="social-btn">
+            <span>GitHub</span>
+          </button>
+        </div>
+
+        <div class="auth-footer">
+          <a href="#">Forgot your password?</a>
+        </div>
+      </form>
+
+      <form class="auth-form" id="signup-form">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="Create a password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+        </div>
+
+        <button type="submit" class="auth-btn">Create Account</button>
+
+        <div class="auth-divider">
+          <span>Or sign up with</span>
+        </div>
+
+        <div class="social-login">
+          <button type="button" class="social-btn">
+            <span>Google</span>
+          </button>
+          <button type="button" class="social-btn">
+            <span>GitHub</span>
+          </button>
+        </div>
+
+        <div class="auth-footer">
+          <p>By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
+        </div>
+      </form>
+    </div>
+  </section>
+<script src="script.js"></script>
+</body>
+</html>
