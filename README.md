@@ -18,9 +18,13 @@ Future Additions: React, Node.js, Express, and Python (For AI/ML integrations)
 📌 Just A Note
 This project is still in development and if you have feedback, and/or suggestions for collaboration, reach out!
 
+Image Preview:
+
+Homepage
 
 <img width="1920" height="1080" alt="Screenshot (135)" src="https://github.com/user-attachments/assets/a000c061-805e-4005-ab2f-587f63ab7614" />
 
+SignUp/Login pages
 
 <img width="1920" height="1080" alt="Screenshot (137)" src="https://github.com/user-attachments/assets/301b14f2-243a-48e6-bddf-59053f77e0c1" />
 
